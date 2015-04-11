@@ -5,6 +5,7 @@
 // Constants
 #define DATAFILE "assgn6_data_unif.txt"
 #define QUERYFILE "assgn6_querysample_unif.txt"
+#define VAFILE ".vafile"
 
 // -- Auto Generated --
 #define BITS 2
