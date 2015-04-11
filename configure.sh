@@ -18,6 +18,6 @@ awk '{
     } else if (NR == 3) {
         print "#define PAGESIZE", $0;
     } else if (NR == 4) {
-        print "#define MEMORY (", $0, "* 1000 * 1000 * 1000 )";
+        print "#define MEMORYSIZE (", $0, "* 1000 * 1000 * 1000 )";
     }
 }' < "vafile.config" >> "config.h"
