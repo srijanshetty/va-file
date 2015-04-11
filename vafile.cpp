@@ -26,6 +26,9 @@
 // The header file
 #include "vafile.h"
 
+// To get the fileSize
+#include <sys/stat.h>
+
 // File IO
 #include <fstream>
 #include <iostream>
@@ -40,18 +43,25 @@
 #include <math.h>
 
 namespace VAFile {
-    // Helper function to get fileSize
-    long long getFileSize(std::string FileName) {
-        std::ifstream ifile;
-        ifile.open (FileName.c_str(), std::ios::binary );
-        ifile.seekg (0, std::ios::end);
-        return ifile.tellg();
+    /**
+     * Get the size of a file.
+     * @param filename The name of the file to check size for
+     * @return The filesize, or 0 if the file does not exist.
+     */
+    long long getFileSize(const std::string& filename) {
+        struct stat st;
+        if(stat(filename.c_str(), &st) != 0) {
+            return 0;
+        }
+        return (long long) st.st_size;
     }
 
-    // Function to compute the quantization of a given coordinate
-    // using binary search
+    /**
+      * Compute the quantization of a given coordinate using binary search
+      * @param coordinate The coordinate
+      * @return an integer quantization value
+      */
     int quantize(double coordinate) {
-        // This is the base
         int first = 1;
         int last = ((int) pow(2, BITS)) - 1;
         double base = pow(2, -1 * BITS);
@@ -61,20 +71,18 @@ namespace VAFile {
             return 0;
         }
 
-        // The value of quantization returned
-        int quant = 0;
-
+        // Computation of quantization using binary search
+        int quantization = 0;
         while (last >= first) {
-            // Compute the mid point
             int mid = (first + last) / 2;
 
-            // Base case, when first and last are equal exit
+            // Base case, when first and last are equal, we get the quantization
             if (last == first) {
-                quant = first;
+                quantization = first;
                 break;
             }
 
-            // Now we compare the coordinate with values
+            // Update the bounds according to the value of the coordinate
             if (coordinate < mid * base) {
                 last = mid - 1;
             } else {
@@ -82,10 +90,14 @@ namespace VAFile {
             }
         }
 
-        return quant;
+        return quantization;
     }
 
-    // Parse a line from a normal file and return the coorinates
+    /**
+      * Parse a line from a normal file and return the coordinates
+      * @param line The line to parse
+      * @return A vector representing the point
+      */
     std::vector<double> parseNormalLine(std::string line) {
         // Create a stringstream from the input line
         std::istringstream inputStream(line);
@@ -102,7 +114,11 @@ namespace VAFile {
         return coordinates;
     }
 
-    // Parse a line from a VAFile and return the coordinates and lineCount
+    /**
+      * Parse a line from a VAFile and return the coordinates and lineCount
+      * @param line The line to parse
+      * @return A pair of the vector as a bitset and the lineCount
+      */
     std::pair< std::vector< std::bitset<BITS> >, long long> parseVALine(std::string line) {
         // Create a stringstream from the input line
         std::istringstream inputStream(line);
@@ -115,6 +131,7 @@ namespace VAFile {
             coordinates.push_back(coordinate);
         }
 
+        // Get the lineCount from the line
         long long lineCount;
         inputStream >> lineCount;
 
@@ -122,7 +139,9 @@ namespace VAFile {
         return make_pair(coordinates, lineCount);
     }
 
-    // Function to build a VAFile for a given DATAFILE
+    /**
+      * Batch build a VAFile from a normal file
+      */
     void batchBuild() {
         std::ifstream ifile(DATAFILE);
         std::ofstream ofile(VAFILE);
@@ -157,7 +176,14 @@ namespace VAFile {
         ofile.close();
     }
 
+    /**
+      * Perform rangeQuery on the VAFile
+      * @param point A vector representation of the query point
+      * @param radius Query radius
+      */
     void rangeQuery(std::vector<double> point, double radius) {
-        std::cout << getFileSize(VAFILE) << std::endl;
+        // Memory map the file incase it is smaller than memory size
+        long long fileSize = getFileSize(VAFILE);
+
     }
 }
