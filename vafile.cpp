@@ -40,6 +40,14 @@
 #include <math.h>
 
 namespace VAFile {
+    // Helper function to get fileSize
+    long long getFileSize(std::string FileName) {
+        std::ifstream ifile;
+        ifile.open (FileName.c_str(), std::ios::binary );
+        ifile.seekg (0, std::ios::end);
+        return ifile.tellg();
+    }
+
     // Function to compute the quantization of a given coordinate
     // using binary search
     int quantize(double coordinate) {
@@ -77,6 +85,43 @@ namespace VAFile {
         return quant;
     }
 
+    // Parse a line from a normal file and return the coorinates
+    std::vector<double> parseNormalLine(std::string line) {
+        // Create a stringstream from the input line
+        std::istringstream inputStream(line);
+
+        // Read each coordinate from the stream and create a vector
+        double coordinate;
+        std::vector<double> coordinates;
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            inputStream >> coordinate;
+            coordinates.push_back(coordinate);
+        }
+
+        // Return a pair
+        return coordinates;
+    }
+
+    // Parse a line from a VAFile and return the coordinates and lineCount
+    std::pair< std::vector< std::bitset<BITS> >, long long> parseVALine(std::string line) {
+        // Create a stringstream from the input line
+        std::istringstream inputStream(line);
+
+        // Read each coordinate from the stream and create a vector
+        std::bitset<BITS> coordinate;
+        std::vector< std::bitset<BITS> > coordinates;
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            inputStream >> coordinate;
+            coordinates.push_back(coordinate);
+        }
+
+        long long lineCount;
+        inputStream >> lineCount;
+
+        // Return a pair of coordinates and lineCount
+        return make_pair(coordinates, lineCount);
+    }
+
     // Function to build a VAFile for a given DATAFILE
     void batchBuild() {
         std::ifstream ifile(DATAFILE);
@@ -87,21 +132,10 @@ namespace VAFile {
 
         // Read the file line by line
         for (std::string line; std::getline(ifile, line); ++lineCount) {
-            // Create a stringstream from the input line
-            std::istringstream inputStream(line);
+            // Parse the input line into coordinates and string
+            std::vector<double> coordinates = parseNormalLine(line);
 
-            // Read the point from the stream
-            double coordinate;
-            std::vector<double> coordinates;
-            for (int i = 0; i < DIMENSIONS; ++i) {
-                inputStream >> coordinate;
-                coordinates.push_back(coordinate);
-            }
-
-            // Read the dataString from the file
-            std::string dataString;
-            inputStream >> dataString;
-
+            // Encode the line and print it out to the file
             // Create an outputStream which will be written to the VAfile
             std::ostringstream outputStream;
 
@@ -117,5 +151,13 @@ namespace VAFile {
             // Push this line to the file
             ofile << outputStream.str() << std::endl << std::flush;
         }
+
+        // Close open files
+        ifile.close();
+        ofile.close();
+    }
+
+    void rangeQuery(std::vector<double> point, double radius) {
+        std::cout << getFileSize(VAFILE) << std::endl;
     }
 }

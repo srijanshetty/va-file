@@ -20,6 +20,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// STL
+#include <vector>
+
 namespace VAFile {
+    // Function to create a VAFile given a normal file
     void batchBuild();
+
+    // Perform rangeQuery on the VAFile
+    void rangeQuery(std::vector<double>, double);
 }
