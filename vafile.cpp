@@ -23,6 +23,9 @@
 // The configuration file
 #include "config.h"
 
+// The header file
+#include "vafile.h"
+
 // File IO
 #include <fstream>
 #include <iostream>

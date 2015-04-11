@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 <name of copyright holder>
+ * Copyright (c) 2015 Srijan R Shetty
  * Author: Srijan R Shetty <srijan.shetty+code@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -20,21 +20,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Include the VPTree library
-#include "vafile.h"
-
-// Stream processing
-#include <iostream>
-#include <sstream>
-
-// STL
-#include <fstream>
-
-using namespace std;
-using namespace VAFile;
-
-int main() {
-    batchBuild();
-
-    return 0;
+namespace VAFile {
+    void batchBuild();
 }
