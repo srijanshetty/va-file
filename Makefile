@@ -5,16 +5,12 @@ DEBUG=-g
 .PHONY: clean
 
 # Build the tree
-driver.o: driver.cpp vafile.o point.o
-	$(CC) $(DEBUG) driver.cpp vafile.o point.o -o tree.out
+driver.o: driver.cpp vafile.o
+	$(CC) $(DEBUG) driver.cpp vafile.o -o tree.out
 
 # Build the vafile library
-vafile.o: point.h vafile.h vafile.cpp config.h
+vafile.o: vafile.h vafile.cpp config.h
 	$(CC) $(CFLAGS) $(DEBUG) vafile.cpp
-
-# Build the point library
-point.o: point.h point.cpp config.h
-	$(CC) $(CFLAGS) $(DEBUG) point.cpp
 
 clean:
 	rm -f *.o *.out *.gch
