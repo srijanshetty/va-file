@@ -2,10 +2,7 @@ CC=g++ -std=c++11
 CFLAGS=-Wall -c
 DEBUG=-g
 
-.PHONY: all clean
-
-# Default to driver.o
-all:
+.PHONY: clean
 
 # Build the tree
 driver.o: driver.cpp vafile.o point.o
