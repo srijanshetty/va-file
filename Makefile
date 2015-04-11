@@ -12,5 +12,10 @@ driver.o: driver.cpp vafile.o
 vafile.o: vafile.h vafile.cpp config.h
 	$(CC) $(CFLAGS) $(DEBUG) vafile.cpp
 
-clean:
+clean: clean-files
 	rm -f *.o *.out *.gch
+
+clean-files:
+	rm -rf objects
+	mkdir objects
+

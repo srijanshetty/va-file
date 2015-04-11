@@ -45,6 +45,9 @@
 #include <cmath>
 
 namespace VAFile {
+    // To keep a track of the number of objects
+    long long objectCount = 0;
+
     long long getFileSize(const std::string& filename) {
         struct stat st;
         if(stat(filename.c_str(), &st) != 0) {
@@ -102,6 +105,17 @@ namespace VAFile {
         return std::sqrt(minDistance);
     }
 
+    double getDistance(std::vector<double> point1, std::vector<double> point2) {
+        double minDistance = 0;
+
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            double component = (point1[i] - point2[i]) * (point1[i] - point2[i]);
+            minDistance += component * component;
+        }
+
+        return std::sqrt(minDistance);
+    }
+
     std::vector< std::bitset<BITS> > getQuantizedPoint(std::vector<double> point) {
         std::vector< std::bitset<BITS> > quantizedPoint;
 
@@ -144,15 +158,34 @@ namespace VAFile {
             coordinates.push_back(coordinate);
         }
 
-        // Get the lineCount from the line
-        long long lineCount;
-        inputStream >> lineCount;
+        // Get the fileIndex from the line
+        long long fileIndex;
+        inputStream >> fileIndex;
 
-        // Return a pair of coordinates and lineCount
-        return make_pair(coordinates, lineCount);
+        // Return a pair of coordinates and fileIndex
+        return make_pair(coordinates, fileIndex);
     }
 
-    void writeVALine(std::vector<double> point, long long lineCount, std::ofstream& ofile) {
+    void writeNormalFile(std::vector<double> point, std::string dataString, long long fileIndex) {
+        // Encode the line and print it out to the file
+        // Create an outputStream which will be written to the VAfile
+        std::ostringstream outputStream;
+
+        // Now add the quantized point to the outputStream
+        for (auto coordinate : point) {
+            outputStream << coordinate << " ";
+        }
+
+        // Now add the dataString
+        outputStream << dataString;
+
+        // Push this line to the file
+        std::ofstream ofile(OBJECTBASE + std::to_string(fileIndex));
+        ofile << outputStream.str() << std::endl << std::flush;
+        ofile.close();
+    }
+
+    void writeVALine(std::vector<double> point, long long fileIndex, std::ofstream& ofile) {
         // Encode the line and print it out to the file
         // Create an outputStream which will be written to the VAfile
         std::ostringstream outputStream;
@@ -162,8 +195,8 @@ namespace VAFile {
             outputStream << std::bitset<BITS>(quantize(coordinate)) << " ";
         }
 
-        // Now add the lineCount
-        outputStream << lineCount;
+        // Now add the fileIndex
+        outputStream << fileIndex;
 
         // Push this line to the file
         ofile << outputStream.str() << std::endl << std::flush;
@@ -173,16 +206,16 @@ namespace VAFile {
         std::ifstream ifile(DATAFILE);
         std::ofstream ofile(VAFILE);
 
-        // A pointer to the location of the point in the file
-        long long lineCount = 1;
-
         // Read the file line by line
-        for (std::string line; std::getline(ifile, line); ++lineCount) {
+        for (std::string line; std::getline(ifile, line); ++objectCount) {
             // Parse the input line into coordinates and string
             auto input = parseNormalLine(line);
 
+            // We create a new file for the object and store is there
+            writeNormalFile(input.first, input.second, objectCount);
+
             // Write the VALine to the file
-            writeVALine(input.first, lineCount, ofile);
+            writeVALine(input.first, objectCount, ofile);
         }
 
         // Close open files
@@ -190,12 +223,48 @@ namespace VAFile {
         ofile.close();
     }
 
-    /**
-      * Perform rangeQuery on the VAFile
-      * @param point A vector representation of the query point
-      * @param radius Query radius
-      */
     void rangeQuery(std::vector<double> point, double radius) {
         // TODO: Memory map the file incase it is smaller than memory size
+        std::ifstream ifile(VAFILE);
+
+        // Filter and search paradigm, so we need a queue
+        std::queue<long long> fileIndices;
+
+        // Loop over the entire VAFile and match
+        for(std::string line; std::getline(ifile, line);) {
+            auto VAPair = parseVALine(line);
+            double minDistance = getMinDistance(point, VAPair.first);
+
+            // If we cannot prune the grid, we add it to the queue
+            if (minDistance <= radius) {
+                fileIndices.push(VAPair.second);
+            }
+        }
+
+        // The work of this file is over
+        ifile.close();
+
+        // Now we loop over the entire non pruned nodes and perform full computation
+        while (!fileIndices.empty()) {
+            // Get the current file index
+            auto fileIndex = fileIndices.front();
+            fileIndices.pop();
+
+            // Open the file
+            std::ifstream ifile(OBJECTBASE + std::to_string(fileIndex));
+
+            // get the point
+            std::string line;
+            std::getline(ifile, line);
+            auto dataPair = parseNormalLine(line);
+
+            // compute the acutal distance
+            if (getDistance(dataPair.first, point) <= radius) {
+                std::cout << dataPair.second << std::endl;
+            }
+
+            ifile.close();
+        }
+
     }
 }

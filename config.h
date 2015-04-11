@@ -6,6 +6,7 @@
 #define DATAFILE "assgn6_data_unif.txt"
 #define QUERYFILE "assgn6_querysample_unif.txt"
 #define VAFILE ".vafile"
+#define OBJECTBASE "objects/object_"
 
 // -- Auto Generated --
 #define BITS 2

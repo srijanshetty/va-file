@@ -52,6 +52,14 @@ namespace VAFile {
     double getMinDistance(std::vector<double> point, std::vector< std::bitset<BITS> > grid);
 
     /**
+      * Get the minimum distance between a point and grid
+      * @param point1 The point as a vector<double>
+      * @param point2 The second point as vector<double>
+      * @return distance
+      */
+    double getDistance(std::vector<double> point1, std::vector<double> point2);
+
+    /**
       * Get the quantized grid for a point
       * @param point The point as a vector<double>
       * @return grid The grid to which the point belongs as vector<bitset>
@@ -71,6 +79,15 @@ namespace VAFile {
       * @return A pair of the point as vector<bitset> and the lineCount
       */
     std::pair< std::vector< std::bitset<BITS> >, long long> parseVALine(std::string line);
+
+    /**
+      * Create a new file and store the vector, dataString
+      * @param point The point as vector<double> to write
+      * @param dataString the data string
+      * @param fileCount index of file to write to
+      * @return A pair of the point as vector<bitset> and the lineCount
+      */
+    void writeNormalFile(std::vector<double> point, std::string dataString, long long fileCount);
 
     /**
       * Write a vector and lineCount to the VAFile
