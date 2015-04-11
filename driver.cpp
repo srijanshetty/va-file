@@ -20,35 +20,21 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// The configuration file
-#include "config.h"
+// Include the VPTree library
+#include "vafile.cpp"
 
-// The point library
-#include "point.h"
+// Stream processing
+#include <iostream>
+#include <sstream>
 
 // STL
-#include <string>
+#include <fstream>
 
-namespace VAFile {
-    class DBObject {
-        private:
-            // Information about the object
-            std::string dataString = "";
-            Point objectPoint = Point();
+using namespace std;
+using namespace VAFile;
 
-        public:
-            // Default constructor
-            DBObject() { };
+int main() {
+    batchBuild();
 
-            // Construct a DBObject
-            DBObject(std::string dataString, Point objectPoint) : dataString(dataString), objectPoint(objectPoint) { };
-
-            // Accessor methods
-            std::string getDataString() const { return dataString; }
-            Point getObjectPoint() const { return objectPoint; }
-    };
-
-    // Function to batch build a VAFile
-    void batchBuild();
+    return 0;
 }
-
