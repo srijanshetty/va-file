@@ -104,6 +104,39 @@ namespace VAFile {
     }
 
     /**
+      * Get the minimum distance between a point and grid
+      * @param point The point as a vector<double>
+      * @param grid The grid as a vector<bitset>
+      * @return Minimum distance
+      */
+    double getMinDistance(std::vector<double> point, std::vector< std::bitset<BITS> > grid) {
+        double base = pow(2, -1 * BITS);
+
+        double minDistance = 0;
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            double component = fabs(grid[i].to_ulong() * base - point[i]);
+            minDistance += component * component;
+        }
+
+        return sqrt(minDistance);
+    }
+
+    /**
+      * Get the quantized grid for a point
+      * @param point The point as a vector<double>
+      * @return grid The grid to which the point belongs as vector<bitset>
+      */
+    std::vector< std::bitset<BITS> > getQuantizedPoint(std::vector<double> point) {
+        std::vector< std::bitset<BITS> > quantizedPoint;
+
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            quantizedPoint.push_back(std::bitset<BITS>(quantize(point[i])));
+        }
+
+        return quantizedPoint;
+    }
+
+    /**
       * Parse a line from a normal file and return the coordinates
       * @param line The line to parse
       * @return A vector representing the point
