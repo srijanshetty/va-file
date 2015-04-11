@@ -11,4 +11,4 @@
 #define BITS 2
 #define DIMENSIONS 25
 #define PAGESIZE 2048
-#define MEMORY 2
+#define MEMORY ( 2 * 1000 * 1000 * 1000 )
