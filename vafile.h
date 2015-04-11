@@ -20,13 +20,76 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// config
+#include "config.h"
+
 // STL
 #include <vector>
+#include <bitset>
+#include <string>
 
 namespace VAFile {
-    // Function to create a VAFile given a normal file
+    /**
+     * Get the size of a file.
+     * @param filename The name of the file to check size for
+     * @return The filesize, or 0 if the file does not exist.
+     */
+    long long getFileSize(const std::string& filename);
+
+    /**
+      * Compute the quantization of a given coordinate using binary search
+      * @param coordinate The coordinate
+      * @return an integer quantization value
+      */
+    int quantize(double coordinate);
+
+    /**
+      * Get the minimum distance between a point and grid
+      * @param point The point as a vector<double>
+      * @param grid The grid as a vector<bitset>
+      * @return Minimum distance
+      */
+    double getMinDistance(std::vector<double> point, std::vector< std::bitset<BITS> > grid);
+
+    /**
+      * Get the quantized grid for a point
+      * @param point The point as a vector<double>
+      * @return grid The grid to which the point belongs as vector<bitset>
+      */
+    std::vector< std::bitset<BITS> > getQuantizedPoint(std::vector<double> point);
+
+    /**
+      * Parse a line from a normal file and return the coordinates
+      * @param line The line to parse
+      * @return A pair of the point as vector<double> and the string
+      */
+    std::pair< std::vector<double>, std::string > parseNormalLine(std::string line);
+
+    /**
+      * Parse a line from a VAFile and return the coordinates and lineCount
+      * @param line The line to parse
+      * @return A pair of the point as vector<bitset> and the lineCount
+      */
+    std::pair< std::vector< std::bitset<BITS> >, long long> parseVALine(std::string line);
+
+    /**
+      * Write a vector and lineCount to the VAFile
+      * @param point The point as vector<double> to write
+      * @param lineCount the data
+      * @param file The file to write to
+      * @return A pair of the point as vector<bitset> and the lineCount
+      */
+    void writeVALine(std::vector<double> point, long long lineCount, std::ofstream& ofile);
+
+    /**
+     * Batch build a VAFile from a normal file
+     */
     void batchBuild();
 
-    // Perform rangeQuery on the VAFile
-    void rangeQuery(std::vector<double>, double);
+    /**
+     * Perform rangeQuery on the VAFile
+     * @param point A vector representation of the query point
+     * @param radius Query radius
+     */
+    void rangeQuery(std::vector<double> point, double radius);
 }

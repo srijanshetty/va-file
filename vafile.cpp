@@ -44,11 +44,6 @@
 #include <cmath>
 
 namespace VAFile {
-    /**
-     * Get the size of a file.
-     * @param filename The name of the file to check size for
-     * @return The filesize, or 0 if the file does not exist.
-     */
     long long getFileSize(const std::string& filename) {
         struct stat st;
         if(stat(filename.c_str(), &st) != 0) {
@@ -57,11 +52,6 @@ namespace VAFile {
         return (long long) st.st_size;
     }
 
-    /**
-      * Compute the quantization of a given coordinate using binary search
-      * @param coordinate The coordinate
-      * @return an integer quantization value
-      */
     int quantize(double coordinate) {
         int first = 1;
         int last = ((int) pow(2, BITS)) - 1;
@@ -99,12 +89,6 @@ namespace VAFile {
         return 0;
     }
 
-    /**
-      * Get the minimum distance between a point and grid
-      * @param point The point as a vector<double>
-      * @param grid The grid as a vector<bitset>
-      * @return Minimum distance
-      */
     double getMinDistance(std::vector<double> point, std::vector< std::bitset<BITS> > grid) {
         double base = pow(2, -1 * BITS);
 
@@ -117,11 +101,6 @@ namespace VAFile {
         return std::sqrt(minDistance);
     }
 
-    /**
-      * Get the quantized grid for a point
-      * @param point The point as a vector<double>
-      * @return grid The grid to which the point belongs as vector<bitset>
-      */
     std::vector< std::bitset<BITS> > getQuantizedPoint(std::vector<double> point) {
         std::vector< std::bitset<BITS> > quantizedPoint;
 
@@ -132,11 +111,6 @@ namespace VAFile {
         return quantizedPoint;
     }
 
-    /**
-      * Parse a line from a normal file and return the coordinates
-      * @param line The line to parse
-      * @return A pair of the point as vector<double> and the string
-      */
     std::pair< std::vector<double>, std::string > parseNormalLine(std::string line) {
         // Create a stringstream from the input line
         std::istringstream inputStream(line);
@@ -157,11 +131,6 @@ namespace VAFile {
         return make_pair(coordinates, dataString);
     }
 
-    /**
-      * Parse a line from a VAFile and return the coordinates and lineCount
-      * @param line The line to parse
-      * @return A pair of the point as vector<bitset> and the lineCount
-      */
     std::pair< std::vector< std::bitset<BITS> >, long long> parseVALine(std::string line) {
         // Create a stringstream from the input line
         std::istringstream inputStream(line);
