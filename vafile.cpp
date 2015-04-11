@@ -29,7 +29,7 @@
 // To get the fileSize
 #include <sys/stat.h>
 
-// File IO
+// Stream Processing
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -38,6 +38,7 @@
 #include <string>
 #include <bitset>
 #include <vector>
+#include <iterator>
 
 // Math
 #include <math.h>
@@ -139,9 +140,9 @@ namespace VAFile {
     /**
       * Parse a line from a normal file and return the coordinates
       * @param line The line to parse
-      * @return A vector representing the point
+      * @return A pair of the point as vector<double> and the string
       */
-    std::vector<double> parseNormalLine(std::string line) {
+    std::pair< std::vector<double>, std::string > parseNormalLine(std::string line) {
         // Create a stringstream from the input line
         std::istringstream inputStream(line);
 
@@ -153,14 +154,18 @@ namespace VAFile {
             coordinates.push_back(coordinate);
         }
 
+        // Get the string
+        std::string dataString;
+        inputStream >> dataString;
+
         // Return a pair
-        return coordinates;
+        return make_pair(coordinates, dataString);
     }
 
     /**
       * Parse a line from a VAFile and return the coordinates and lineCount
       * @param line The line to parse
-      * @return A pair of the vector as a bitset and the lineCount
+      * @return A pair of the point as vector<bitset> and the lineCount
       */
     std::pair< std::vector< std::bitset<BITS> >, long long> parseVALine(std::string line) {
         // Create a stringstream from the input line
@@ -195,16 +200,15 @@ namespace VAFile {
         // Read the file line by line
         for (std::string line; std::getline(ifile, line); ++lineCount) {
             // Parse the input line into coordinates and string
-            std::vector<double> coordinates = parseNormalLine(line);
+            std::pair< std::vector<double>, std::string> input = parseNormalLine(line);
 
             // Encode the line and print it out to the file
             // Create an outputStream which will be written to the VAfile
             std::ostringstream outputStream;
 
             // Now add the quantized point to the outputStream
-            for (auto coordinate : coordinates) {
-                std::bitset<BITS> quant(quantize(coordinate));
-                outputStream << quant << " ";
+            for (auto coordinate : input.first) {
+                outputStream << std::bitset<BITS>(quantize(coordinate)) << " ";
             }
 
             // Now add the lineCount
@@ -225,8 +229,8 @@ namespace VAFile {
       * @param radius Query radius
       */
     void rangeQuery(std::vector<double> point, double radius) {
-        // Memory map the file incase it is smaller than memory size
-        long long fileSize = getFileSize(VAFILE);
+        // TODO: Memory map the file incase it is smaller than memory size
 
+        std::vector< std::bitset<BITS> > grid = getQuantizedPoint(point);
     }
 }
