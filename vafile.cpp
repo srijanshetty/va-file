@@ -66,9 +66,13 @@ namespace VAFile {
         int last = ((int) pow(2, BITS)) - 1;
         double base = pow(2, -1 * BITS);
 
-        // The base case if it is smaller than first mark
-        if (coordinate < base) {
+        // Base cases
+        if (coordinate <= base) {
             return 0;
+        }
+
+        if (coordinate >= base * last) {
+            return last;
         }
 
         // Computation of quantization using binary search
@@ -77,8 +81,14 @@ namespace VAFile {
             int mid = (first + last) / 2;
 
             // Base case, when first and last are equal, we get the quantization
-            if (last == first) {
-                quantization = first;
+            if (first == last) {
+                if (coordinate < first * base) {
+                    quantization = first - 1;
+                } else if (coordinate > first * base){
+                    quantization = first + 1;
+                } else {
+                    quantization = first;
+                }
                 break;
             }
 
