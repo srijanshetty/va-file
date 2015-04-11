@@ -41,7 +41,7 @@
 #include <iterator>
 
 // Math
-#include <math.h>
+#include <cmath>
 
 namespace VAFile {
     /**
@@ -67,30 +67,25 @@ namespace VAFile {
         int last = ((int) pow(2, BITS)) - 1;
         double base = pow(2, -1 * BITS);
 
-        // Base cases
+        // Coordinates towards the start
         if (coordinate <= base) {
             return 0;
         }
 
-        if (coordinate >= base * last) {
+        // Coordinates towards the end
+        if (coordinate >= base * (last - 1)) {
             return last;
         }
 
         // Computation of quantization using binary search
-        int quantization = 0;
         while (last >= first) {
             int mid = (first + last) / 2;
 
-            // Base case, when first and last are equal, we get the quantization
-            if (first == last) {
-                if (coordinate < first * base) {
-                    quantization = first - 1;
-                } else if (coordinate > first * base){
-                    quantization = first + 1;
-                } else {
-                    quantization = first;
-                }
-                break;
+            // We check if the point is in the vicinity
+            if (coordinate >= ((mid - 1) * base) && coordinate < (mid * base)) {
+                return mid - 1;
+            } else if  (coordinate >= (mid * base) && coordinate < ((mid + 1) * base)) {
+                return mid;
             }
 
             // Update the bounds according to the value of the coordinate
@@ -101,7 +96,7 @@ namespace VAFile {
             }
         }
 
-        return quantization;
+        return 0;
     }
 
     /**
@@ -115,11 +110,11 @@ namespace VAFile {
 
         double minDistance = 0;
         for (int i = 0; i < DIMENSIONS; ++i) {
-            double component = fabs(grid[i].to_ulong() * base - point[i]);
+            double component = std::abs(grid[i].to_ulong() * base - point[i]);
             minDistance += component * component;
         }
 
-        return sqrt(minDistance);
+        return std::sqrt(minDistance);
     }
 
     /**
@@ -230,7 +225,5 @@ namespace VAFile {
       */
     void rangeQuery(std::vector<double> point, double radius) {
         // TODO: Memory map the file incase it is smaller than memory size
-
-        std::vector< std::bitset<BITS> > grid = getQuantizedPoint(point);
     }
 }
