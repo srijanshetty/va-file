@@ -38,6 +38,7 @@
 #include <string>
 #include <bitset>
 #include <vector>
+#include <queue>
 #include <iterator>
 
 // Math
@@ -151,9 +152,23 @@ namespace VAFile {
         return make_pair(coordinates, lineCount);
     }
 
-    /**
-      * Batch build a VAFile from a normal file
-      */
+    void writeVALine(std::vector<double> point, long long lineCount, std::ofstream& ofile) {
+        // Encode the line and print it out to the file
+        // Create an outputStream which will be written to the VAfile
+        std::ostringstream outputStream;
+
+        // Now add the quantized point to the outputStream
+        for (auto coordinate : point) {
+            outputStream << std::bitset<BITS>(quantize(coordinate)) << " ";
+        }
+
+        // Now add the lineCount
+        outputStream << lineCount;
+
+        // Push this line to the file
+        ofile << outputStream.str() << std::endl << std::flush;
+    }
+
     void batchBuild() {
         std::ifstream ifile(DATAFILE);
         std::ofstream ofile(VAFILE);
@@ -164,22 +179,10 @@ namespace VAFile {
         // Read the file line by line
         for (std::string line; std::getline(ifile, line); ++lineCount) {
             // Parse the input line into coordinates and string
-            std::pair< std::vector<double>, std::string> input = parseNormalLine(line);
+            auto input = parseNormalLine(line);
 
-            // Encode the line and print it out to the file
-            // Create an outputStream which will be written to the VAfile
-            std::ostringstream outputStream;
-
-            // Now add the quantized point to the outputStream
-            for (auto coordinate : input.first) {
-                outputStream << std::bitset<BITS>(quantize(coordinate)) << " ";
-            }
-
-            // Now add the lineCount
-            outputStream << lineCount;
-
-            // Push this line to the file
-            ofile << outputStream.str() << std::endl << std::flush;
+            // Write the VALine to the file
+            writeVALine(input.first, lineCount, ofile);
         }
 
         // Close open files
