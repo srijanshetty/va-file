@@ -26,7 +26,7 @@
 // Standard containers
 #include <vector>
 
-namespace Point {
+namespace VAFile {
     class Point {
         public:
             // The coordiantes of the point
@@ -37,7 +37,7 @@ namespace Point {
             Point() { };
 
             // The standard constructor
-            Point(std::vector<double> _coordinates) : coordinates(_coordinates) { };
+            Point(std::vector<double> coordinates) : coordinates(coordinates) { };
 
             // Print the point
             void print() const;

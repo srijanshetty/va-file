@@ -26,7 +26,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace Point {
+namespace VAFile {
     // Print the point
     void Point::print() const {
         std::cout << "(";
