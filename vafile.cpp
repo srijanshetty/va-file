@@ -67,7 +67,7 @@ namespace VAFile {
         }
 
         // Coordinates towards the end
-        if (coordinate >= base * (last - 1)) {
+        if (coordinate >= base * last) {
             return last;
         }
 
