@@ -124,4 +124,11 @@ namespace VAFile {
      * @param radius Query radius
      */
     void rangeQuery(std::vector<double> point, double radius);
+
+    /**
+     * Perform kNNQuery on the VAFile
+     * @param point A vector representation of the query point
+     * @param k no of nearest neighbours
+     */
+    void kNNQuery(std::vector<double> point, long long k);
 }
