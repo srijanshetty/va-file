@@ -245,6 +245,54 @@ namespace VAFile {
         ofile.close();
     }
 
+    void pointQuery(std::vector<double> point) {
+        // TODO: Memory map the file incase it is smaller than memory size
+        std::ifstream ifile(VAFILE);
+
+        // Quantize the query point to get the grid
+        std::vector< std::bitset<BITS> > grid = getGrid(point);
+
+        // Filter and search paradigm, so we need a queue
+        std::queue<long long> fileIndices;
+
+        // Loop over the entire VAFile and prune the matches
+        for(std::string line; std::getline(ifile, line);) {
+            auto VAPair = parseVALine(line);
+
+            // If we cannot prune the grid, we add it to the queue
+            if (equal(VAPair.first, grid)) {
+                fileIndices.push(VAPair.second);
+            }
+        }
+
+        // The work of this file is over
+        ifile.close();
+
+        // Now we loop over the entire non pruned nodes and perform full computation
+        while (!fileIndices.empty()) {
+            // Get the current file index
+            auto fileIndex = fileIndices.front();
+            fileIndices.pop();
+
+            // Open the file
+            std::ifstream ifile(OBJECTBASE + std::to_string(fileIndex));
+
+            // get the point
+            std::string line;
+            std::getline(ifile, line);
+            auto dataPair = parseNormalLine(line);
+
+            // compute the acutal distance
+            if (equal(dataPair.first, point)) {
+#ifdef OUTPUT
+                std::cout << dataPair.second << std::endl;
+#endif
+            }
+
+            ifile.close();
+        }
+    }
+
     void rangeQuery(std::vector<double> point, double radius) {
         // TODO: Memory map the file incase it is smaller than memory size
         std::ifstream ifile(VAFILE);

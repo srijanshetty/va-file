@@ -113,6 +113,12 @@ namespace VAFile {
     void batchBuild();
 
     /**
+     * Perform pointQuery on the VAFile
+     * @param point A vector representation of the query point
+     */
+    void pointQuery(std::vector<double> point);
+
+    /**
      * Perform rangeQuery on the VAFile
      * @param point A vector representation of the query point
      * @param radius Query radius
