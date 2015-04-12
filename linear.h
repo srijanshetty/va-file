@@ -28,9 +28,6 @@
 #include <string>
 
 namespace LinearArray {
-    // Store the file as a linear array
-    std::vector< std::pair<std::vector<double>, std::string> > linearArray;
-
     /**
      * Build a Linear Array from a normal file
      */

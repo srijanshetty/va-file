@@ -39,6 +39,9 @@
 #include <queue>
 
 namespace LinearArray {
+    // Store the file as a linear array
+    std::vector< std::pair<std::vector<double>, std::string> > linearArray;
+
     void buildLinearArray() {
         std::ifstream ifile(DATAFILE);
         std::ofstream ofile(VAFILE);
@@ -113,7 +116,7 @@ namespace LinearArray {
         // Now we loop over the neighbours and print them
         while (!nearestNeighbours.empty()) {
 #ifdef OUTPUT
-            std::cout << nearestNeighbours.top().second << std::endl;
+            std::cout << nearestNeighbours.top().first << std::endl;
 #endif
             nearestNeighbours.pop();
         }
