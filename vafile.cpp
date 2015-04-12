@@ -126,6 +126,28 @@ namespace VAFile {
         return std::sqrt(minDistance);
     }
 
+    bool equal(std::vector<double> object1, std::vector<double> object2) {
+        // Check if every dimension is the same
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            if (object1[i] != object2[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool equal(std::vector< std::bitset<BITS> > object1, std::vector< std::bitset<BITS> > object2) {
+        // Check if every dimension is the same
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            if (object1[i] != object2[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     std::pair< std::vector<double>, std::string > parseNormalLine(std::string line) {
         // Create a stringstream from the input line
         std::istringstream inputStream(line);

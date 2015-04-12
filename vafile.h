@@ -67,6 +67,15 @@ namespace VAFile {
     double getDistance(std::vector<double> point1, std::vector<double> point2);
 
     /**
+      * Check if two objects are equal
+      * @param object1 The first object
+      * @param object2 The second object
+      * @return bool
+      */
+    bool equal(std::vector<double> object1, std::vector<double> object2);
+    bool equal(std::vector< std::bitset<BITS> > object1, std::vector< std::bitset<BITS> > object2);
+
+    /**
       * Parse a line from a normal file and return the coordinates
       * @param line The line to parse
       * @return A pair of the point as vector<double> and the string
