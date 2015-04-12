@@ -348,7 +348,14 @@ namespace VAFile {
         class comparator {
             public:
                 bool operator() (std::pair< long long, double> &p1, std::pair<long long, double> &p2) {
-                    return p1.second > p2.second;
+                    return p1.second < p2.second;
+                }
+        };
+
+        class comparator2 {
+            public:
+                bool operator() (std::pair< std::string, double> &p1, std::pair< std::string, double> &p2) {
+                    return p1.second < p2.second;
                 }
         };
 
@@ -370,9 +377,6 @@ namespace VAFile {
 
                 // Otherwise check the pruning distance criterion
                 if (minDistance < fileIndices.top().second) {
-                    // We don't need the top now
-                    fileIndices.pop();
-
                     // Push the new element
                     fileIndices.push(std::make_pair(VAPair.second, minDistance));
                 }
@@ -382,25 +386,53 @@ namespace VAFile {
         // The work of this file is over
         ifile.close();
 
+        // Maintain a priority queue for the k nearest neighbours
+        std::priority_queue< std::pair<std::string, double>,
+            std::vector< std::pair<std::string, double> >, comparator2 > nearestNeighbours;
+
         // Now we loop over the entire non pruned nodes and perform full computation
         while (!fileIndices.empty()) {
             // Get the current file index
             auto fileIndex = fileIndices.top().first;
             fileIndices.pop();
 
-            // Open the file
+            // get the point from the file
             std::ifstream ifile(OBJECTBASE + std::to_string(fileIndex));
-
-            // get the point
             std::string line;
             std::getline(ifile, line);
             auto dataPair = parseNormalLine(line);
 
-#ifdef OUTPUT
-            std::cout << dataPair.second << std::endl;
-#endif
+            // Get the actual distance from the point
+            double minDistance = getDistance(point, dataPair.first);
 
+            // If the queue is empty, we push elements into it
+            if ((long long) nearestNeighbours.size() < k) {
+                nearestNeighbours.push(std::make_pair(dataPair.second, minDistance));
+            } else {
+                // The pruning distance is the maximum distance of any point in the queue
+                // Any element which is closer than the elements in the queue is pushed
+                // onto the queue
+
+                // Otherwise check the pruning distance criterion
+                if (minDistance < nearestNeighbours.top().second) {
+                    // We don't need the top now
+                    nearestNeighbours.pop();
+
+                    // Push the new element
+                    nearestNeighbours.push(std::make_pair(dataPair.second, minDistance));
+                }
+            }
+
+            // Close the file
             ifile.close();
+        }
+
+        // Now we loop over the neighbours and print them
+        while (!nearestNeighbours.empty()) {
+#ifdef OUTPUT
+            std::cout << nearestNeighbours.top().first << std::endl;
+#endif
+            nearestNeighbours.pop();
         }
     }
 }

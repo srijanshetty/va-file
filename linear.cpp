@@ -82,7 +82,7 @@ namespace LinearArray {
         class comparator {
             public:
                 bool operator() (std::pair< std::string, double> &p1, std::pair<std::string, double> &p2) {
-                    return p1.second > p2.second;
+                    return p1.second < p2.second;
                 }
         };
 
