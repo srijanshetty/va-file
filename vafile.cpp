@@ -108,7 +108,7 @@ namespace VAFile {
 
         double minDistance = 0;
         for (int i = 0; i < DIMENSIONS; ++i) {
-            double component = std::abs(grid[i].to_ulong() * base - point[i]);
+            double component = std::abs((double)grid[i].to_ulong() * base - point[i]);
             minDistance += component * component;
         }
 
@@ -119,7 +119,7 @@ namespace VAFile {
         double minDistance = 0;
 
         for (int i = 0; i < DIMENSIONS; ++i) {
-            double component = (point1[i] - point2[i]) * (point1[i] - point2[i]);
+            double component = (point1[i] - point2[i]);
             minDistance += component * component;
         }
 
