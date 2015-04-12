@@ -252,7 +252,7 @@ namespace VAFile {
         // Filter and search paradigm, so we need a queue
         std::queue<long long> fileIndices;
 
-        // Loop over the entire VAFile and match
+        // Loop over the entire VAFile and prune the matches
         for(std::string line; std::getline(ifile, line);) {
             auto VAPair = parseVALine(line);
             double minDistance = getMinDistance(point, VAPair.first);
@@ -289,6 +289,5 @@ namespace VAFile {
 
             ifile.close();
         }
-
     }
 }
