@@ -34,6 +34,9 @@
 #include <vector>
 #include <iterator>
 
+// Time
+#include <chrono>
+
 using namespace std;
 using namespace VAFile;
 
