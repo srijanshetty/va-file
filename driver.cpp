@@ -28,7 +28,6 @@
 
 // Stream processing
 #include <iostream>
-#include <sstream>
 #include <fstream>
 
 // STL
@@ -39,7 +38,10 @@ using namespace std;
 using namespace VAFile;
 
 int main() {
-    batchBuild();
+    // build a new VAFILE only if the old one does not exist
+    if (getFileSize(VAFILE) == 0)  {
+        batchBuild();
+    }
 
     return 0;
 }

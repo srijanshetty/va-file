@@ -13,9 +13,10 @@ vafile.o: vafile.h vafile.cpp config.h
 	$(CC) $(CFLAGS) $(DEBUG) vafile.cpp
 
 clean: clean-files
-	rm -f *.o *.out *.gch
+	@rm -f *.o *.out *.gch
 
 clean-files:
 	rm -rf objects
+	rm -f .vafile
 	mkdir objects
 
