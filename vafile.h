@@ -44,6 +44,13 @@ namespace VAFile {
     int quantize(double coordinate);
 
     /**
+      * Get the quantized grid for a point
+      * @param point The point as a vector<double>
+      * @return grid The grid to which the point belongs as vector<bitset>
+      */
+    std::vector< std::bitset<BITS> > getGrid(std::vector<double> point);
+
+    /**
       * Get the minimum distance between a point and grid
       * @param point The point as a vector<double>
       * @param grid The grid as a vector<bitset>
@@ -58,13 +65,6 @@ namespace VAFile {
       * @return distance
       */
     double getDistance(std::vector<double> point1, std::vector<double> point2);
-
-    /**
-      * Get the quantized grid for a point
-      * @param point The point as a vector<double>
-      * @return grid The grid to which the point belongs as vector<bitset>
-      */
-    std::vector< std::bitset<BITS> > getQuantizedPoint(std::vector<double> point);
 
     /**
       * Parse a line from a normal file and return the coordinates

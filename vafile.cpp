@@ -93,6 +93,16 @@ namespace VAFile {
         return 0;
     }
 
+    std::vector< std::bitset<BITS> > getGrid(std::vector<double> point) {
+        std::vector< std::bitset<BITS> > quantizedPoint;
+
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            quantizedPoint.push_back(std::bitset<BITS>(quantize(point[i])));
+        }
+
+        return quantizedPoint;
+    }
+
     double getMinDistance(std::vector<double> point, std::vector< std::bitset<BITS> > grid) {
         double base = pow(2, -1 * BITS);
 
@@ -114,16 +124,6 @@ namespace VAFile {
         }
 
         return std::sqrt(minDistance);
-    }
-
-    std::vector< std::bitset<BITS> > getQuantizedPoint(std::vector<double> point) {
-        std::vector< std::bitset<BITS> > quantizedPoint;
-
-        for (int i = 0; i < DIMENSIONS; ++i) {
-            quantizedPoint.push_back(std::bitset<BITS>(quantize(point[i])));
-        }
-
-        return quantizedPoint;
     }
 
     std::pair< std::vector<double>, std::string > parseNormalLine(std::string line) {
