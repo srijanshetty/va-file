@@ -260,7 +260,9 @@ namespace VAFile {
 
             // compute the acutal distance
             if (getDistance(dataPair.first, point) <= radius) {
+#ifdef OUTPUT
                 std::cout << dataPair.second << std::endl;
+#endif
             }
 
             ifile.close();
