@@ -2,6 +2,10 @@
 #define OUTPUT
 // #define TIME
 
+// -- Structure we are testing --
+#define LINEAR
+// #define VA
+
 // Constants
 #define DATAFILE "assgn6_data_unif.txt"
 #define QUERYFILE "assgn6_querysample_unif.txt"
