@@ -40,8 +40,11 @@ using namespace VAFile;
 int main() {
     // build a new VAFILE only if the old one does not exist
     if (getFileSize(VAFILE) == 0)  {
-        batchBuild();
+        buildVAFile();
     }
 
+    vector<double> point1 = {0.6525,0.6854,0.4948,0.9703,0.7881,0.1102,0.0276,0.2945,0.4779,0.9532,0.1711,0.1468,0.1404,0.4714,0.0344,0.2327,0.1815,0.6254,0.4062,0.2297,0.4208,0.3973,0.9163,0.0500,0.7478};
+
+    kNNQuery(point1, 2);
     return 0;
 }

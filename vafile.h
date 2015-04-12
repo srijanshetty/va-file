@@ -108,9 +108,9 @@ namespace VAFile {
     void writeVALine(std::vector<double> point, long long lineCount, std::ofstream& ofile);
 
     /**
-     * Batch build a VAFile from a normal file
+     * Build a VAFile from a normal file
      */
-    void batchBuild();
+    void buildVAFile();
 
     /**
      * Perform pointQuery on the VAFile

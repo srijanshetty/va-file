@@ -225,7 +225,7 @@ namespace VAFile {
         ofile << outputStream.str() << std::endl << std::flush;
     }
 
-    void batchBuild() {
+    void buildVAFile() {
         std::ifstream ifile(DATAFILE);
         std::ofstream ofile(VAFILE);
 
