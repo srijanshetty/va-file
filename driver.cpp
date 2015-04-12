@@ -20,15 +20,20 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// Configuration file
+#include "config.h"
+
 // Include the VPTree library
 #include "vafile.h"
 
 // Stream processing
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 // STL
-#include <fstream>
+#include <vector>
+#include <iterator>
 
 using namespace std;
 using namespace VAFile;
