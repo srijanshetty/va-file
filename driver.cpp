@@ -26,6 +26,9 @@
 // Include the VPTree library
 #include "vafile.h"
 
+// Inclue the linear library
+#include "linear.h"
+
 // Stream processing
 #include <iostream>
 #include <fstream>
@@ -38,7 +41,14 @@
 #include <chrono>
 
 using namespace std;
+
+#ifdef VA
 using namespace VAFile;
+#endif
+
+#ifdef LINEAR
+using namespace LinearArray;
+#endif
 
 void processQuery() {
     // Open the query file
@@ -129,10 +139,16 @@ void processQuery() {
 }
 
 int main() {
+#ifdef VA
     // build a new VAFILE only if the old one does not exist
-    if (getFileSize(VAFILE) == 0)  {
-        buildVAFile();
+    if (VAFile::getFileSize(VAFILE) == 0)  {
+        VAFile::buildVAFile();
     }
+#endif
+
+#ifdef LINEAR
+    LinearArray::buildLinearArray();
+#endif
 
     // Process the query file
     processQuery();
