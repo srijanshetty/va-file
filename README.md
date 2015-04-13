@@ -3,26 +3,46 @@
 ## Results
 - The computed time is in microseconds.
 
-**VAFile**
+### VAFile
 
+**Uniform Distribution**
 QUERY  | MAX    | MIN    | AVG       | STD
 ------ | ------ | -----  | --------- | --------
 1      | 115882 | 98666  | 103254    | 248.6
 2      | 134572 | 100186 | 105565    | 448.3
 3      | 304390 | 168004 | 280348    | 328.9
 
+**Exp Distribution**
+QUERY  | MAX    | MIN    | AVG       | STD
+------ | ------ | -----  | --------- | --------
+1      | 155766 | 95727  | 108512    | 3272.5
+2      | 155044 | 97024  | 106746    | 467.8
+3      | 395127 | 233080 | 297905    | 5135.1
 
-**Linear Array**
+### Linear Array
 
+** Uniform Distribution**
 QUERY  | MAX    | MIN   | AVG       | STD
 ------ | ------ | ----- | --------- | --------
 1      | 12411  | 9089  | 9728.65   | 3.565
 2      | 11248  | 9159  | 9722.29   | 16.629
 3      | 11708  | 9293  | 10168.5   | 9.25
 
+**Exp Distribution**
+QUERY  | MAX    | MIN   | AVG       | STD
+------ | ------ | ----- | --------- | --------
+1      | 11245  | 9050  | 9710.3    | 20.43
+2      | 10658  | 9109  | 9714.59   | 17.041
+3      | 15306  | 9419  | 10373     | 23.2
+
+
 ## Observations
 
 **Linear Array vs VA-file**
+
+**Optimizations**
+
+**Effect of Distribution**
 
 ## INSTALL
 
