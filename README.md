@@ -39,10 +39,13 @@ QUERY  | MAX    | MIN   | AVG       | STD
 ## Observations
 
 **Linear Array vs VA-file**
+- The experiments match our intuition that linear array outperforms a VA File as there is no unnecessary overhead of disk access in the case of linear array. (This observation is without the pre-loading of the file to memory)
 
 **Optimizations**
+- Pre-loading the file to memory saves quite a lot of time and the performance is comparable to linear array in such a case.
 
 **Effect of Distribution**
+- The average case performance remains the same while the standard deviations increase by an order of magnitude.
 
 ## INSTALL
 
