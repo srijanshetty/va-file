@@ -6,6 +6,7 @@
 ### VAFile
 
 **Uniform Distribution**
+
 QUERY  | MAX    | MIN    | AVG       | STD
 ------ | ------ | -----  | --------- | --------
 1      | 115882 | 98666  | 103254    | 248.6
@@ -13,6 +14,7 @@ QUERY  | MAX    | MIN    | AVG       | STD
 3      | 304390 | 168004 | 280348    | 328.9
 
 **Exp Distribution**
+
 QUERY  | MAX    | MIN    | AVG       | STD
 ------ | ------ | -----  | --------- | --------
 1      | 155766 | 95727  | 108512    | 3272.5
@@ -22,6 +24,7 @@ QUERY  | MAX    | MIN    | AVG       | STD
 ### Linear Array
 
 ** Uniform Distribution**
+
 QUERY  | MAX    | MIN   | AVG       | STD
 ------ | ------ | ----- | --------- | --------
 1      | 12411  | 9089  | 9728.65   | 3.565
@@ -29,6 +32,7 @@ QUERY  | MAX    | MIN   | AVG       | STD
 3      | 11708  | 9293  | 10168.5   | 9.25
 
 **Exp Distribution**
+
 QUERY  | MAX    | MIN   | AVG       | STD
 ------ | ------ | ----- | --------- | --------
 1      | 11245  | 9050  | 9710.3    | 20.43
